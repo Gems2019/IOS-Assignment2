@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct LogoutView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  @StateObject var vModel = LogoutViewViewModel()
+  var body: some View {
+    Button("Logout") {
+        vModel.logout()
     }
+    .buttonStyle(.borderedProminent)
+    .controlSize(.large)
+  }
 }
 
 #Preview {
-    LogoutView()
+  LogoutView()
 }
