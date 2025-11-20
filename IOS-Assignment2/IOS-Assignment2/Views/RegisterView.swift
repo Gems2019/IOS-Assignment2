@@ -13,52 +13,69 @@ struct RegisterView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
-        VStack {
-            // Header - full size in portrait, compact in landscape
-            if verticalSizeClass == .regular {
-                HeaderView(title: "Register", subtitle: "Start checking Your Stock", angle: -15, backColor: .orange)
-            } else {
-                // Compact header for landscape
-                Text("Register")
-                    .font(.headline)
-                    .padding(.top, 8)
-            }
+        ZStack {
+            // Background Image
+            Image("BG")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
 
-            // Register Form
-            Form {
-                
-                if !viewModel.errMsg.isEmpty {
-                  Text(viewModel.errMsg)
-                    .foregroundColor(.red)
+            VStack(spacing: 30) {
+                Spacer()
+
+                // Logo
+                Image("StockLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 120, height: 120)
+                    .shadow(color: Color(red: 1.0, green: 0.84, blue: 0.0).opacity(0.3), radius: 10)
+
+                Text("Create Account")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(red: 1.0, green: 0.84, blue: 0.0))
+
+                // Register Form Card
+                VStack(spacing: 20) {
+                    if !viewModel.errMsg.isEmpty {
+                        Text(viewModel.errMsg)
+                            .foregroundColor(.red)
+                    }
+
+                    TextField("First Name", text: $viewModel.firstName)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocorrectionDisabled()
+                    
+                    TextField("Last Name", text: $viewModel.lastName)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocorrectionDisabled()
+                  
+                    TextField("Email Address", text: $viewModel.email)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocapitalization(.none)
+                        .autocorrectionDisabled()
+                  
+                    SecureField("Password", text: $viewModel.password)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                  
+                    Button("Create Account") {viewModel.register()}
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color(red: 1.0, green: 0.84, blue: 0.0))
+                        .foregroundColor(.black)
+                        .fontWeight(.bold)
+                        .cornerRadius(10)
                 }
+                .padding(30)
+                .background(Color.black.opacity(0.8), in: RoundedRectangle(cornerRadius: 20))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color(red: 1.0, green: 0.84, blue: 0.0), lineWidth: 2)
+                )
+                .padding(.horizontal, 30)
 
-                TextField("First Name", text: $viewModel.firstName)
-                 .textFieldStyle(DefaultTextFieldStyle())
-                 .autocorrectionDisabled()
-                
-                TextField("Last Name", text: $viewModel.lastName)
-                 .textFieldStyle(DefaultTextFieldStyle())
-                 .autocorrectionDisabled()
-              
-                TextField("Email Address", text: $viewModel.email)
-                 .textFieldStyle(DefaultTextFieldStyle())
-                 .autocapitalization(.none)
-                 .autocorrectionDisabled()
-              
-                SecureField("Password", text: $viewModel.password)
-                 .textFieldStyle(DefaultTextFieldStyle())
-              
-              Spacer()
-              
-              Button("Create Account") {viewModel.register()}
-                 .buttonStyle(.borderedProminent)
-                 .controlSize(.large)
-                 .padding()
-            
+                Spacer()
             }
-            .offset(y: verticalSizeClass == .regular ? -50 : 0)
-
-            Spacer()
         }
     }
 }
