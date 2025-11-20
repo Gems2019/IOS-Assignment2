@@ -15,57 +15,89 @@ struct AiView: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
-                Text("StockWise AI")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.pink)
+            ZStack {
+                // Background Image
+                Image("BG")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                
+                VStack(spacing: 20) {
+                    Text("StockWise AI")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color(red: 1.0, green: 0.84, blue: 0.0))
+                        .padding(.top, 30)
 
-                TextField("Enter stock symbol (e.g. AAPL)", text: $symbol)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .autocapitalization(.allCharacters)
-                    .padding(.horizontal)
+                    VStack(spacing: 15) {
+                        TextField("Enter stock symbol (e.g. AAPL)", text: $symbol)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .autocapitalization(.allCharacters)
 
-                Button(action: { fetchSummary() }) {
-                    Text("Get AI Summary")
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity)
+                        Button(action: { fetchSummary() }) {
+                            Text("Get AI Summary")
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                        }
+                        .background(Color(red: 1.0, green: 0.84, blue: 0.0))
+                        .foregroundColor(.black)
+                        .cornerRadius(10)
+                        .disabled(symbol.isEmpty || isLoading)
+                        .opacity((symbol.isEmpty || isLoading) ? 0.6 : 1.0)
+                    }
+                    .padding(20)
+                    .background(Color.black.opacity(0.8), in: RoundedRectangle(cornerRadius: 15))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color(red: 1.0, green: 0.84, blue: 0.0), lineWidth: 2)
+                    )
+                    .padding(.horizontal, 30)
+
+                    if isLoading {
+                        ProgressView("Fetching...")
+                            .foregroundColor(Color(red: 1.0, green: 0.84, blue: 0.0))
+                            .tint(Color(red: 1.0, green: 0.84, blue: 0.0))
+                            .padding()
+                    }
+
+                    if !errorMsg.isEmpty {
+                        Text(errorMsg)
+                            .foregroundColor(.red)
+                            .padding(.horizontal)
+                    }
+
+                    ScrollView {
+                        Text(summary.isEmpty ? "Enter a stock symbol to begin." : summary)
+                            .foregroundColor(Color(red: 1.0, green: 0.84, blue: 0.0))
+                            .padding(20)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color.black.opacity(0.8), in: RoundedRectangle(cornerRadius: 15))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(Color(red: 1.0, green: 0.84, blue: 0.0), lineWidth: 1)
+                            )
+                    }
+                    .padding(.horizontal, 30)
+
+                    Spacer()
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-                .tint(.pink)
-                .padding(.horizontal)
-                .disabled(symbol.isEmpty || isLoading)
-
-                if isLoading {
-                    ProgressView("Fetching...")
-                        .padding()
-                }
-
-                if !errorMsg.isEmpty {
-                    Text(errorMsg)
-                        .foregroundColor(.red)
-                        .padding(.horizontal)
-                }
-
-                ScrollView {
-                    Text(summary.isEmpty ? "Enter a stock symbol to begin." : summary)
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-
-                Spacer()
+                .padding(.top, 10)
             }
-            .padding()
-            .navigationTitle("AI Assistant")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("AI Assistant")
+                        .font(.headline)
+                        .foregroundColor(Color(red: 1.0, green: 0.84, blue: 0.0))
+                }
+            }
         }
     }
 
     func fetchSummary() {
-        // ⚠️ Replace this IP with YOUR local IP address from ⚠️
-        // Run this in your terminal 'ipconfig getifaddr en0'
-        // And the IP address you get is what you use to replace 192.168.1.79 below
-        guard let url = URL(string: "http://192.168.1.79:5250/api/stock/summary?symbol=\(symbol)") else {
+        let apiBaseURL = "https://stockwise-api-dev-czyqpwdtyduyq.azurewebsites.net"
+        guard let url = URL(string: "\(apiBaseURL)/api/stock/summary?symbol=\(symbol)") else {
             errorMsg = "Invalid URL"
             return
         }
