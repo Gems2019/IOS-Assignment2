@@ -32,7 +32,7 @@ struct AboutView: View {
                         .foregroundColor(Color(red: 1.0, green: 0.84, blue: 0.0))
 
                     VStack(spacing: 10) {
-                        Text("Jaskunwar Hunjan - ")
+                        Text("Jaskunwar Hunjan - A01195757")
                         Text("Gem Sha - A01345766")
                         Text("Alzen Landayan - A01403978" )
                     }
