@@ -11,42 +11,42 @@ struct AboutView: View {
     var body: some View {
         ZStack {
             // Background Image
-            Image("BackgroundImage")
+            Image("BG")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-                .overlay(
-                    LinearGradient(
-                        colors: [.red.opacity(0.4), .clear],
-                        startPoint: .bottom,
-                        endPoint: .top
-                    )
-                )
 
-            // Frosted Glass Card
-            VStack(spacing: 20) {
-                Text("Team Members")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.black)
-                    .shadow(radius: 3)
+            VStack(spacing: 30) {
+                // Logo
+                Image("StockLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 150, height: 150)
+                    .shadow(color: Color(red: 1.0, green: 0.84, blue: 0.0).opacity(0.3), radius: 10)
 
-                VStack(spacing: 10) {
-                    Text("Jaskunwar Hunjan - ")
-                    Text("Gem Sha - A01345766")
-                    Text("Alzen Landayan - " )
+                // Team Members Card
+                VStack(spacing: 20) {
+                    Text("Team Members")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color(red: 1.0, green: 0.84, blue: 0.0))
+
+                    VStack(spacing: 10) {
+                        Text("Jaskunwar Hunjan - ")
+                        Text("Gem Sha - A01345766")
+                        Text("Alzen Landayan - A01403978" )
+                    }
+                    .font(.body)
+                    .foregroundColor(Color(red: 1.0, green: 0.84, blue: 0.0))
                 }
-                .font(.body)
-                .foregroundColor(.black.opacity(2.9))
+                .padding(.vertical, 40)
+                .padding(.horizontal, 30)
+                .background(Color.black.opacity(0.8), in: RoundedRectangle(cornerRadius: 25, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                        .stroke(Color(red: 1.0, green: 0.84, blue: 0.0), lineWidth: 2)
+                )
             }
-            .padding(.vertical, 40)
-            .padding(.horizontal, 30)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 25, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 25, style: .continuous)
-                    .stroke(Color.white.opacity(9.3), lineWidth: 1)
-            )
-    
         }
     }
 }
