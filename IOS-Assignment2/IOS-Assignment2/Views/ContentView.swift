@@ -46,8 +46,23 @@ struct ContentView: View {
                 .tag(3)
             
         }
+        .accentColor(Color(red: 1.0, green: 0.84, blue: 0.0))
         .onAppear {
             viewModel.checkAuthStatus()
+            // Set tab bar appearance
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor.black
+            
+            // Set item colors
+            appearance.stackedLayoutAppearance.normal.iconColor = UIColor(red: 1.0, green: 0.84, blue: 0.0, alpha: 0.6)
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(red: 1.0, green: 0.84, blue: 0.0, alpha: 0.6)]
+            
+            appearance.stackedLayoutAppearance.selected.iconColor = UIColor(red: 1.0, green: 0.84, blue: 0.0, alpha: 1.0)
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(red: 1.0, green: 0.84, blue: 0.0, alpha: 1.0)]
+            
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
         }
     }
 }
